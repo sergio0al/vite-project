@@ -27,19 +27,94 @@ const mainDom = document.querySelector("#mainDom")
 const footerDom = document.querySelector("#footerDom")
 
 headerDom.innerHTML = headerVista()
-mainDom.innerHTML = tablaVista(BD)
-
-
-window.addEventListener('hashchange', () =>{
-    const ruta = window.location.hash;
-    if (ruta === "#nova"){
-        mainDom.innerHTML = incidencia()
-    }else{
-        mainDom.innerHTML = tablaVista(BD)
-    }
-});
-
 footerDom.innerHTML = footerVistas()
+
+function router(){
+    if (window.location.hash === "#nova") pintarFormulario()
+    else pintarTabla()
+}
+
+window.addEventListener("hashchange", router)
+router() 
+
+
+
+
+
+function pintarFormulario(){
+    mainDom.innerHTML = incidencia()
+
+    // Añadir 
+    let editando = false
+
+    const addBtn = document.querySelector("#addBtn")
+    const sectionAdd = document.querySelector("#sectionAdd")
+    const formAdd = document.querySelector("#formAdd")
+    addBtn.addEventListener("click", () =>{
+        sectionAdd.classList.toggle("hidden")
+        title.value = ""
+        description.value = ""
+        selectStatus.value = ""
+        selectPriority.value = ""
+        assing.value = ""
+        guardarLocalStorage()
+    })
+
+
+
+    const title = document.querySelector("#title")
+    const description = document.querySelector("#description")
+    const selectStatus = document.querySelector("#selectStatus")
+    const selectPriority = document.querySelector("#selectPriority")
+    const assing = document.querySelector("#assing")
+
+    const desaBtn = document.querySelector("#desaBtn")
+        desaBtn.addEventListener("click", (e) =>{
+            e.preventDefault()
+            if(editando){
+                let tarea = BD.find(t => t.id === editando)
+                tarea.titol = title.value
+                tarea.descripcio = description.value
+                tarea.estat = selectStatus.value
+                tarea.prioritat = selectPriority.value
+                tarea.assignat = assing.value
+                editando = false
+            }else{
+                BD.push({id: BD.length+1, titol: title.value, descripcio: description.value, estat: selectStatus.value, prioritat: selectPriority.value, assignat: assing.value, data: "29-08-2007"},)
+            }
+            cargarTabla()
+            sectionAdd.classList.toggle("hidden")
+            guardarLocalStorage()
+        })
+
+
+
+            let tancarBtn = document.querySelector("#tancarBtn")
+            tancarBtn.addEventListener("click", (e) =>{
+                e.preventDefault()
+                sectionAdd.classList.toggle("hidden")
+            })
+        }
+
+
+        function pintarTabla(){
+            mainDom.innerHTML = tablaVista(BD)
+            const form = document.querySelector("#form")
+        const selectEstat = document.querySelector("#selectEstat")
+        const selectPrioritat = document.querySelector("#selectPrioritat")
+        form.addEventListener("change", filtrar)
+        function filtrar(){
+            let lineas = document.querySelectorAll(".linea")
+            lineas.forEach(linea =>{
+                if(selectEstat.value.includes(linea.dataset.estat) && selectPrioritat.value.includes(linea.dataset.prioritat)){
+                    linea.style.display = ""
+                }else{
+                    linea.style.display = "none"
+                }
+            })
+        }
+
+}
 
 
 

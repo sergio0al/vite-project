@@ -56,9 +56,13 @@ export const tablaVista = (BD) =>{
     })
     
     html += `
-        </tbody>
-    </table>
+                </tbody>
+            </table>
+        </div>
     </section>`
 
     return html
 }
+
+
+

@@ -16,7 +16,7 @@ export const incidencia = () => {
             </select></label>
             <label for="assing" class="flex flex-col gap-1 text-sm col-span-2">Assignat a<input type="text" id="assing" class="w-full bg-gray-100 box-border px-3 py-2 rounded-xl text-black"></label>
             <a href="/" id="tancarBtn" class="bg-red-500 cursor-pointer h-10 rounded-xl text-black flex items-center justify-center">Tancar</a>
-            <button id="desaBtn" class="bg-green-500 cursor-pointer h-10 rounded-xl text-black">Desar</button>
+            <a href="/" id="desaBtn" class="bg-green-500 cursor-pointer h-10 rounded-xl text-black flex items-center justify-center">Desar</a>
         </form>
     </section>`
 }
