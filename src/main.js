@@ -1,9 +1,10 @@
-import './style/input.css'
+import './style.css'
 import { titulo } from './componentes/titulo'
 import { home } from './vistas/home.js'
 import { headerVista } from './vistas/header.js'
 import { tablaVista } from './vistas/tabla.js'
 import { incidencia } from './vistas/incidencia.js' 
+import { footerVistas } from './vistas/footer.js'
 
 
 const tabla = [
@@ -23,6 +24,7 @@ guardarLocalStorage()
 
 const headerDom = document.querySelector("#headerDom")
 const mainDom = document.querySelector("#mainDom")
+const footerDom = document.querySelector("#footerDom")
 
 headerDom.innerHTML = headerVista()
 mainDom.innerHTML = tablaVista(BD)
@@ -30,9 +32,14 @@ mainDom.innerHTML = tablaVista(BD)
 
 window.addEventListener('hashchange', () =>{
     const ruta = window.location.hash;
-    if(ruta === "#/nova"){
+    if (ruta === "#nova"){
         mainDom.innerHTML = incidencia()
     }else{
         mainDom.innerHTML = tablaVista(BD)
     }
 });
+
+footerDom.innerHTML = footerVistas()
+
+
+
