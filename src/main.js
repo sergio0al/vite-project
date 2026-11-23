@@ -3,6 +3,7 @@ import { headerVista } from './vistas/header.js'
 import { tablaVista } from './vistas/tabla.js'
 import { incidencia } from './vistas/incidencia.js'
 import { footerVistas } from './vistas/footer.js'
+import { detalls } from './vistas/detalls.js'
 
 const tabla = [
     {id: 1, titol: "Sergio title", descripcio: "", estat: "Obert", prioritat: "Alta", assignat: "sergop alonso", data: "29-08-2007"},
@@ -24,19 +25,27 @@ const headerDom = document.querySelector("#headerDom")
 const mainDom = document.querySelector("#mainDom")
 const footerDom = document.querySelector("#footerDom")
 
-
 headerDom.innerHTML = headerVista()
 footerDom.innerHTML = footerVistas()
 
 
 function router(){
     const rute = window.location.hash
+
     if (rute === "#nova"){
        pintarFormulario() 
-    }else{
+    } else if (rute.startsWith("#editar/")) {
+        const id = Number(rute.slice(8))
+        pintarFormulario(id)
+    } else if (rute.startsWith("#descripcio/")) {
+        const id = Number(rute.slice(12))
+        const incidenciaActual = BD.find(t => t.id === id)
+        mainDom.innerHTML = detalls(incidenciaActual)
+    }else {
         pintarTabla()
     }
 }
+
 
 window.addEventListener("hashchange", router)
 router()
@@ -54,8 +63,10 @@ function pintarFormulario(id){
     const selectPriority = document.querySelector("#selectPriority")
     const assing = document.querySelector("#assing")
 
-    // NUEVO: rellenar campos al editar
+
+
     if(editando){
+        
         const t = BD.find(t => t.id === editando)
         title.value = t.titol
         description.value = t.descripcio
@@ -63,6 +74,8 @@ function pintarFormulario(id){
         selectPriority.value = t.prioritat
         assing.value = t.assignat
     }
+
+
 
     document.querySelector("#desaBtn").addEventListener("click", (e) =>{
         e.preventDefault()
@@ -74,11 +87,13 @@ function pintarFormulario(id){
             tarea.prioritat = selectPriority.value
             tarea.assignat = assing.value
         }else{
-            BD.push({id: Math.max(0, ...BD.map(t => t.id)) + 1, titol: title.value, descripcio: description.value, estat: selectStatus.value, prioritat: selectPriority.value, assignat: assing.value, data: "29-08-2007"})
+            const hoy = new Date().toLocaleDateString("es-ES", { day: "2-digit", month: "2-digit", year: "numeric" }).replaceAll("/", "-")
+            BD.push({id: BD.length + 1, titol: title.value, descripcio: description.value, estat: selectStatus.value, prioritat: selectPriority.value, assignat: assing.value, data: hoy})
         }
         guardarLocalStorage()
-        window.location.hash = ""   // vuelve a la tabla
+        window.location.hash = ""  
     })
+
 
     document.querySelector("#tancarBtn").addEventListener("click", (e) =>{
         e.preventDefault()
@@ -93,10 +108,12 @@ function pintarTabla(){
     const form = document.querySelector("#form")
     const selectEstat = document.querySelector("#selectEstat")
     const selectPrioritat = document.querySelector("#selectPrioritat")
+    const lineas = document.querySelector(".linea")
+
 
     form.addEventListener("change", filtrar)
     function filtrar(){
-        document.querySelectorAll(".linea").forEach(linea =>{
+        lineas.forEach(linea =>{
             if(selectEstat.value.includes(linea.dataset.estat) && selectPrioritat.value.includes(linea.dataset.prioritat)){
                 linea.style.display = ""
             }else{
@@ -105,23 +122,33 @@ function pintarTabla(){
         })
     }
 
-    // NUEVO: Netejar filtres
-    document.querySelector("#netejar").addEventListener("click", (e) =>{
-        e.preventDefault()
-        form.reset()
-        filtrar()
-    })
 
-    // NUEVO: Editar / Eliminar
-    document.querySelector("#tbody").addEventListener("click", (e) =>{
-        const id = Number(e.target.dataset.id)
-        if(e.target.classList.contains("editBtn")){
+
+
+
+    const tbody = document.querySelector("#tbody")    
+    tbody.addEventListener("click", (e) => {
+    
+        if (e.target.classList.contains("editBtn")) {
+            const id = Number(e.target.dataset.id)
             window.location.hash = "#editar/" + id
+            return 
         }
-        if(e.target.classList.contains("deleteBtn")){
+
+     
+        if (e.target.classList.contains("deleteBtn")) {
+            const id = Number(e.target.dataset.id)
             BD = BD.filter(t => t.id !== id)
             guardarLocalStorage()
             pintarTabla()
+            return 
+        }
+
+
+        const fila = e.target.closest(".linea")
+        if (fila) {
+            const id = Number(fila.dataset.id)
+            window.location.hash = "#descripcio/" + id
         }
     })
 }

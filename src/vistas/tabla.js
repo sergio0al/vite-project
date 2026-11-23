@@ -1,5 +1,7 @@
 let html = ""
 
+
+
 export const tablaVista = (BD) =>{
     html = `
     <section id="sectionFiltro" class="mx-60 border border-gray-300 rounded-lg p-4 mt-5">
@@ -22,7 +24,7 @@ export const tablaVista = (BD) =>{
 
     <section id="sectionTabla" class="mt-5 mx-60">
         <a href="/#nova" id="addBtn" class="block w-fit ml-auto px-4 py-2 text-[14px] bg-blue-500 hover:bg-blue-600 rounded-lg font-semibold text-white"><i class="fa-solid fa-plus"></i>➕ Nou Incidència</a>
-        <div class="mt-4 border border-gray-300 rounded-lg overflow-hidden shadow-sm">
+        <div class="mt-4 border border-gray-300 rounded-lg shadow-sm overflow-auto h-min max-h-[300px]">
             <table id="table" class="w-full text-sm text-left">
                 <thead class="bg-gray-50 border-b border-gray-300">
                     <tr>
@@ -40,7 +42,7 @@ export const tablaVista = (BD) =>{
 
     BD.map(linea => {
         html += `
-        <tr class="linea" data-estat="${linea.estat}" data-prioritat="${linea.prioritat}">
+        <tr class="linea cursor-pointer" data-estat="${linea.estat}" data-prioritat="${linea.prioritat}" data-id="${linea.id}">
             <td class="id px-3 py-3">${linea.id}</td>
             <td class="titol px-3 py-3">${linea.titol}</td>
             <td class="descripcion px-3 py-3">${linea.descripcio}</td>
