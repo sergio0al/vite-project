@@ -10,11 +10,11 @@ export const detalls = (incidencia) => {
         </div>
         
         <div class="space-y-3 text-sm">
-            <p><strong>Descripció:</strong> ${incidencia.descripcio || "Sense descripció"}</p>
-            <p><strong>Estat:</strong> ${incidencia.estat}</p>
-            <p><strong>Prioritat:</strong> ${incidencia.prioritat}</p>
-            <p><strong>Assignat a:</strong> ${incidencia.assignat}</p>
-            <p><strong>Data:</strong> ${incidencia.data}</p>
+            <p>Descripció: ${incidencia.descripcio}</p>
+            <p>Estat: ${incidencia.estat}</p>
+            <p>Prioritat: ${incidencia.prioritat}</p>
+            <p>Assignat a: ${incidencia.assignat}</p>
+            <p>Data: ${incidencia.data}</p>
         </div>
     </section>
   `
