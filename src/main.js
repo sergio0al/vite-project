@@ -25,13 +25,13 @@ const headerDom = document.querySelector("#headerDom")
 const mainDom = document.querySelector("#mainDom")
 const footerDom = document.querySelector("#footerDom")
 
-headerDom.innerHTML = headerVista()
+headerDom.innerHTML = headerVista(BD)
 footerDom.innerHTML = footerVistas()
 
 
 function router(){
     const rute = window.location.hash
-
+    headerDom.innerHTML = headerVista(BD)
     if (rute === "#nova"){
        pintarFormulario() 
     } else if (rute.startsWith("#editar/")) {
@@ -108,7 +108,7 @@ function pintarTabla(){
     const form = document.querySelector("#form")
     const selectEstat = document.querySelector("#selectEstat")
     const selectPrioritat = document.querySelector("#selectPrioritat")
-    const lineas = document.querySelector(".linea")
+    const lineas = document.querySelectorAll(".linea")
 
 
     form.addEventListener("change", filtrar)
