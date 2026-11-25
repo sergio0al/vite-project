@@ -64,7 +64,6 @@ function pintarFormulario(id){
     const assing = document.querySelector("#assing")
 
 
-
     if(editando){
         
         const t = BD.find(t => t.id === editando)
@@ -110,6 +109,8 @@ function pintarTabla(){
     const selectPrioritat = document.querySelector("#selectPrioritat")
     const lineas = document.querySelectorAll(".linea")
 
+    const netejar = document.querySelector("#netejar")
+    netejar.addEventListener("click", router)
 
     form.addEventListener("change", filtrar)
     function filtrar(){
